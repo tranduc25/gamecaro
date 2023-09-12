@@ -329,7 +329,7 @@ public class GameRoom extends JFrame {
 
 		JButton btnNewButton = new JButton("Đầu hàng");
 		btnNewButton.setBackground(new Color(83, 168, 168));
-//		btnNewButton.setIcon(new ImageIcon("src/view/button_Dauhang_109x42.png"));
+		btnNewButton.setIcon(new ImageIcon(Home.class.getResource("/view/button_Dauhang_109x42.png")));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -347,7 +347,7 @@ public class GameRoom extends JFrame {
 
 		JButton btnNewButton_1 = new JButton("Xin hòa");
 		btnNewButton_1.setBackground(new Color(83, 168, 168));
-		btnNewButton_1.setIcon(new ImageIcon("src/view/button_Xinhoa_109x42.png"));
+		btnNewButton_1.setIcon(new ImageIcon(Home.class.getResource("/view/button_Xinhoa_109x42.png")));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

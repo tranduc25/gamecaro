@@ -250,117 +250,7 @@ public class ServerThread implements Runnable {
 					}
 					Server.serverThreadBus.SendAll(sms);
 				}
-				
-				
-				
-				//gamebo3
-				if (messageSplit[0].equals("startbo3")) {
-
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							this.write("startbo3,X," + serverThread.getName()+","+serverThread.avatar);
-							this.run = true;
-							serverThread.write("startbo3,O," + this.getName()+","+this.avatar);
-							serverThread.run = true;
-						}
-					}
-
-				}
-				
-				if (messageSplit[0].equals("exitbo3")) {
-
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("doi-thu-da-thoat-bo3");
-							serverThread.setRoomfull(false);
-						}
-					}
-					this.setID_ROOM(0);
-					this.setRoom(false);
-					this.setRoomfull(false);
-					this.write("exit-room-bo3");
-					Server.serverThreadBus.RoomList();
-				}
-				
-				if (messageSplit[0].equals("go-room-bo3-now")) {
-					int i = 0;
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (serverThread.isRoom == true && serverThread.roomfull == false) {
-							this.setID_ROOM(serverThread.getID_ROOM());
-							this.setRoom(true);
-							this.setRoomfull(true);
-							serverThread.setRoomfull(true);
-							Server.serverThreadBus.sendto(serverThread, "doi-thu-join-room-bo3-now," + this.getName()+","+this.avatar);
-							this.write("me-join-room-bo3-now," + getID_ROOM() + "," + serverThread.getName()+","+serverThread.avatar);
-							i = 1;
-							break;
-
-						}
-					}
-					if(i == 0) {
-						Server.serverThreadBus.createRoom(this);
-						this.setRoomfull(false);
-						Server.serverThreadBus.RoomList();
-						write("create-now,"+this.getID_ROOM());
-					}
-				}
-				if (messageSplit[0].equals("khong-co-phong-bo3")) {
-					this.setRoom(false);
-					this.setID_ROOM(0);
-					this.setRoomfull(false);
-					Server.serverThreadBus.RoomList();
-					write("delete");
-				}
-				if (messageSplit[0].equals("sms-bo3")) {
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("sms-bo3," + messageSplit[1]);
-						}
-					}
-				}
-
-				if (messageSplit[0].equals("dau-hang-bo3")) {
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("doi-thu-dau-hang-bo3");
-						}
-					}
-					this.write("dau-hang-bo3");
-				}
-				if (messageSplit[0].equals("xin-hoa-bo3")) {
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("doi-thu-xin-hoa-bo3");
-						}
-					}
-				}
-				if (messageSplit[0].equals("yes-hoa-bo3")) {
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("dong-y-hoa-bo3");
-						}
-					}
-				}
-				if (messageSplit[0].equals("no-hoa-bo3")) {
-					for (ServerThread serverThread : Server.serverThreadBus.getListServerThreads()) {
-						if (this != serverThread && serverThread.isRoom == true
-								&& serverThread.getID_ROOM() == this.getID_ROOM()) {
-							serverThread.write("khong-hoa-bo3");
-						}
-					}
-				}
-				
-				
-				
-				
-				//
-				
+					
 			}
 		} catch (IOException e) {
 			if(this.run == true) {
@@ -369,7 +259,6 @@ public class ServerThread implements Runnable {
 							&& serverThread.getID_ROOM() == this.getID_ROOM()) {
 						try {
 							serverThread.write("doi-thu-da-thoat-game");
-							serverThread.write("doi-thu-da-thoat-game-bo3"); //bo3
 							serverThread.roomfull = false;
 							serverThread.run = false;
 						} catch (IOException e1) {
@@ -385,7 +274,6 @@ public class ServerThread implements Runnable {
 							&& serverThread.getID_ROOM() == this.getID_ROOM()) {
 						try {
 							serverThread.write("doi-thu-da-thoat");
-							serverThread.write("doi-thu-da-thoat-bo3"); //bo3
 							serverThread.roomfull = false;
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block

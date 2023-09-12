@@ -12,8 +12,6 @@ import model.Player;
 import view.GameRoom;
 import view.InRoom;
 import view.Offline;
-import view.RoomBO3;
-import view.WaitingBO3;
 import view.User;
 import view.Home;
 
@@ -32,8 +30,6 @@ import java.net.UnknownHostException;
 
 public class Client {
 	private GameRoom gameroom;
-	private RoomBO3 gamebo3;
-	private WaitingBO3 waitingbo3;
 	private Home viewonline;
 	private InRoom inroom;
 	private User user;
@@ -209,111 +205,6 @@ public class Client {
 								JOptionPane.showMessageDialog(null, "Đối thủ không đồng ý hòa, hãy tiếp tục thi đấu", "Thông báo",
 										JOptionPane.INFORMATION_MESSAGE);
 							}
-							
-							
-//							Game BO3
-							
-							
-							
-							
-							if (messageSplit[0].equals("doi-thu-join-room-bo3-now")) {
-								waitingbo3.setVisible(true);
-								viewonline.closeld();
-								viewonline.setVisible(false);
-								waitingbo3.setplayer1(messageSplit[1],messageSplit[2]);
-								System.out.println("Doi thu vao room bo3");
-							}
-			
-							if (messageSplit[0].equals("me-join-room-bo3-now")) {
-								viewonline.closeld();
-
-								viewonline.setVisible(false);
-								waitingbo3 = new WaitingBO3(client,player);
-								waitingbo3.SetIDRoom(messageSplit[1]);
-								waitingbo3.setplayer2(messageSplit[2],messageSplit[3]);
-							}
-							if (messageSplit[0].equals("doi-thu-da-thoat-bo3")) {
-								waitingbo3.exitroom();
-							}
-							 
-							if (messageSplit[0].equals("startbo3")) {
-								player.setValue(messageSplit[1]);
-								waitingbo3.setVisible(false);
-								gamebo3 = new RoomBO3(client, player);
-								gamebo3.setplayer(messageSplit[2], messageSplit[3]);
-							}
-							if (messageSplit[0].equals("attackbo3")) {
-								gamebo3.setAttack(Integer.parseInt(messageSplit[1]),Integer.parseInt(messageSplit[2]));
-
-							}
-//							if (messageSplit[0].equals("lose")) {
-//								
-//								gameroom.SetWin(Integer.parseInt(messageSplit[1]), Integer.parseInt(messageSplit[2]),Integer.parseInt(messageSplit[3]));
-//								gameroom.lose();
-//								gameroom.dispose();
-//								inroom.setVisible(true);
-//							}
-//							if (messageSplit[0].equals("win")) {
-//								JOptionPane.showMessageDialog(null, "Bạn đã chiến thắng", "Thông báo",
-//										JOptionPane.INFORMATION_MESSAGE);
-//								gameroom.dispose();
-//								inroom.setVisible(true);
-//
-//							}
-							if(messageSplit[0].equals("exit-room-bo3")){
-								waitingbo3.dispose();
-								viewonline.setVisible(true);
-							}
-							if(messageSplit[0].equals("delete")){
-								waitingbo3.dispose();
-							}
-							if(messageSplit[0].equals("sms-bo3")){
-								gamebo3.setsms(messageSplit[1]);
-							}
-							
-							if(messageSplit[0].equals("doi-thu-da-thoat-game-bo3")){
-								
-								gamebo3.endbo3();
-								gamebo3.dispose();
-								waitingbo3.exitroom();
-								waitingbo3.setVisible(true);
-							}
-							if(messageSplit[0].equals("doi-thu-dau-hang-bo3")){
-								JOptionPane.showMessageDialog(null, "Đối thủ đầu hàng BO3, bạn đã chiến thắng", "Thông báo",
-										JOptionPane.INFORMATION_MESSAGE);
-								gamebo3.dispose();
-								waitingbo3.setVisible(true);
-							}
-							if(messageSplit[0].equals("dau-hang-bo3")){
-								JOptionPane.showMessageDialog(null, "Bạn đã thua", "Thông báo",
-										JOptionPane.INFORMATION_MESSAGE);
-								gamebo3.dispose();
-								waitingbo3.setVisible(true);
-							}
-							if(messageSplit[0].equals("doi-thu-xin-hoa-bo3")){
-								int res = JOptionPane.showConfirmDialog(null, "Bạn có đồng ý hòa không?","Đối thủ gửi yêu cầu hòa hoãn?",
-										JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-								if (res == JOptionPane.YES_OPTION) {
-									write("yes-hoa-bo3");
-									JOptionPane.showMessageDialog(null, "Ván này hòa", "Thông báo",
-											JOptionPane.INFORMATION_MESSAGE);
-									gamebo3.dispose();
-									waitingbo3.setVisible(true);
-								} else if (res == JOptionPane.NO_OPTION) {
-									write("no-hoa-bo3");
-								}
-							}
-							if(messageSplit[0].equals("dong-y-hoa-bo3")){
-								JOptionPane.showMessageDialog(null, "Ván này hòa", "Thông báo",
-										JOptionPane.INFORMATION_MESSAGE);
-								gamebo3.dispose();
-								waitingbo3.setVisible(true);
-							}
-							if(messageSplit[0].equals("khong-hoa-bo3")){
-								JOptionPane.showMessageDialog(null, "Đối thủ không đồng ý hòa, hãy tiếp tục thi đấu", "Thông báo",
-										JOptionPane.INFORMATION_MESSAGE);
-							}
-							
 							
 							
 						}

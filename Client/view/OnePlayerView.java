@@ -5,15 +5,20 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,7 +38,10 @@ public class OnePlayerView extends JFrame {
 	private ButtonCell[][] buttonCellModel = new ButtonCell[N][N];
 	private int[][] markPlayer = new int[N][N];
 
+    private Timer timer = new Timer();
     private int ST = 0;
+    private int sec = 0;
+
     
     AlphaBeta alphaBeta = new AlphaBeta();
     public static final int winScore = 100000000;
@@ -43,11 +51,13 @@ public class OnePlayerView extends JFrame {
 	public static final int ST_NORMAL = 2;
 	public int count = 0;
 	private JButton btnStart;
+	private JLabel lblTime;
 
+	
 	Stack<Integer> stk = new Stack<>();
 
 	public OnePlayerView(int depth) {
-
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OnePlayerView.class.getResource("/icon/tic-tac-toe.png")));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(940, 685);
@@ -65,8 +75,34 @@ public class OnePlayerView extends JFrame {
 		tictactoe.setBackground(new Color(83, 168, 168));
 
 		tictactoe.setLayout(new GridLayout(N, N));
-		tictactoe.setBounds(210, 22, 675, 616);
+		tictactoe.setBounds(248, 15, 675, 616);
 		contentPane.add(tictactoe);
+		
+		JLabel lblgameCaro = new JLabel("Game Caro");
+		lblgameCaro.setForeground(Color.WHITE);
+		lblgameCaro.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 20));
+		lblgameCaro.setBounds(31, 15, 152, 44);
+		contentPane.add(lblgameCaro);
+		
+		JLabel lblChoivsMay = new JLabel("Chơi với máy");
+		lblChoivsMay.setForeground(new Color(255, 255, 255));
+		lblChoivsMay.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 19));
+		lblChoivsMay.setBounds(62, 132, 137, 28);
+		contentPane.add(lblChoivsMay);
+		
+		JLabel lblOffline = new JLabel("Offline");
+		lblOffline.setForeground(Color.WHITE);
+		lblOffline.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 18));
+		lblOffline.setBounds(128, 69, 85, 28);
+		contentPane.add(lblOffline);
+		
+		JLabel lblThongtinTrandau = new JLabel("Thông tin trận đấu");
+		lblThongtinTrandau.setForeground(new Color(255, 255, 181));
+		lblThongtinTrandau.setFont(new Font("Courier New", Font.BOLD, 21));
+		lblThongtinTrandau.setHorizontalAlignment(SwingConstants.CENTER);
+		lblThongtinTrandau.setBounds(0, 184, 245, 43);
+		contentPane.add(lblThongtinTrandau);
+
 		
 		if(depth==1) {
 			JLabel lblNewLabel_7 = new JLabel("Mức độ: Dễ");
@@ -102,14 +138,12 @@ public class OnePlayerView extends JFrame {
 
 					@Override
 					public void mouseExited(MouseEvent e) {
-//						if (markPlayer[x][y]==0&&ST==0) buttonCellModel[x][y].setIcon(new ImageIcon("image/border.jpg"));
-//						if (markPlayer[x][y]==0&&ST==1) buttonCellModel[x][y].setIcon(new ImageIcon("image/border.jpg"));
+
 					}
 
 					@Override
 					public void mouseEntered(MouseEvent e) {
-//						if (markPlayer[x][y]==0&&ST==0) buttonCellModel[x][y].setIcon(new ImageIcon("image/border2.jpg"));
-//						if (markPlayer[x][y]==0&&ST==1) buttonCellModel[x][y].setIcon(new ImageIcon(OnePlayerView.class.getResource("/icon/x2_pre.jpg")));
+
 					}
 
 					@Override
@@ -139,25 +173,109 @@ public class OnePlayerView extends JFrame {
 					}
 				});
 			}
+		
+		
+		JLabel lblTrandaugiua = new JLabel("Trận đấu giữa:");
+		lblTrandaugiua.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 20));
+		lblTrandaugiua.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTrandaugiua.setForeground(new Color(255, 255, 255));
+		lblTrandaugiua.setBounds(31, 371, 199, 28);
+		contentPane.add(lblTrandaugiua);
+		
+		JLabel lblNguoichoi1 = new JLabel("Bạn");
+		lblNguoichoi1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNguoichoi1.setForeground(new Color(255, 255, 255));
+		lblNguoichoi1.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 20));
+		lblNguoichoi1.setBounds(0, 409, 102, 40);
+		contentPane.add(lblNguoichoi1);
+		
+		JLabel lblIconsVs = new JLabel("");
+		lblIconsVs.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIconsVs.setBounds(86, 409, 67, 54);
+		lblIconsVs.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/vs_85x85.png")));
+		contentPane.add(lblIconsVs);
+		
+		JLabel lblMay = new JLabel("Máy");
+		lblMay.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMay.setForeground(new Color(255, 255, 255));
+		lblMay.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 20));
+		lblMay.setBounds(159, 409, 54, 40);
+		contentPane.add(lblMay);
+		
+		JLabel lblTgThidau = new JLabel("Thời gian thi đấu: ");
+		lblTgThidau.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTgThidau.setForeground(Color.WHITE);
+		lblTgThidau.setFont(new Font("Courier New", Font.BOLD | Font.ITALIC, 16));
+		lblTgThidau.setBounds(18, 298, 208, 22);
+		contentPane.add(lblTgThidau);
+		
+		lblTime = new JLabel("00:00");
+		lblTime.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTime.setForeground(Color.WHITE);
+		lblTime.setFont(new Font("Courier New", Font.ITALIC, 16));
+		lblTime.setBounds(86, 327, 61, 22);
+		contentPane.add(lblTime);
+
+		JButton btnReset = new JButton("");
+		btnReset.setFont(new Font("Space Mono", Font.BOLD, 18));
+		btnReset.setBackground(new Color(83, 168, 168));
+		btnReset.setBounds(140, 562, 54, 54);
+		btnReset.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/reset_50x50.png")));
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				playSoundButton();
+				Reset();
+			}
+		});
+		contentPane.add(btnReset);
+		
+		JButton btnExit = new JButton("");
+		btnExit.setFont(new Font("Space Mono", Font.BOLD, 18));
+		btnExit.setBackground(new Color(83, 168, 168));
+		btnExit.setBounds(48, 562, 54, 54);
+		btnExit.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/exit_50x50.png")));
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				playSoundButton();
+				System.exit(0);
+			}
+		});
+		contentPane.add(btnExit);
+	
 		btnStart = new JButton("0");
 		btnStart.setForeground(new Color(83, 168, 168));
 		btnStart.setFont(new Font("Tahoma", Font.PLAIN, 5));
 		btnStart.setBackground(new Color(83, 168, 168));
-		btnStart.setBounds(45, 22, 126, 40);
+		btnStart.setBounds(57, 485, 126, 40);
 		btnStart.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/buttonBatdau_114x38.png")));
 		
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				playSoundButton();
 				String cl = e.getActionCommand();
 
 				if (cl.equals("0")) {
 					ST = 1;
+					timer.scheduleAtFixedRate(new TimerTask() {
+						@Override
+						public void run() {
+							sec++;
+							lblTime.setText(((sec / 60) / 10) + "" + (sec / 60) % 10 + ":" + ((sec % 60) / 10) + (sec % 60 % 10));
+						}
+					}, 1000, 1000); // trễ ban đầu 1000ms ,vòng lặp lại sau 1000ms
 					btnStart.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/buttonTamdung_114x38.png")));
 					btnStart.setText("1");
 
 				} else if (cl.equals("2")) {
 					ST = 1;
 					btnStart.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/buttonTamdung_114x38.png")));
+					timer.scheduleAtFixedRate(new TimerTask() {
+						@Override
+						public void run() {
+							sec++;
+							lblTime.setText(((sec / 60) / 10) + "" + (sec / 60) % 10 + ":" + ((sec % 60) / 10) + (sec % 60 % 10));
+						}
+					}, 1000, 1000);
 					btnStart.setText("1");
 					
 					for (int i = 0; i < N; i++) {
@@ -170,14 +288,10 @@ public class OnePlayerView extends JFrame {
 					
 				} else if (cl.equals("1")) {
 					ST = 2;
+					timer.cancel();
 					btnStart.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/buttonTieptuc_114x38.png")));
 					btnStart.setText("2");
 					
-//					for (int i = 0; i < N; i++) {
-//						for (int j = 0; j < N; j++) {
-//							buttonCellModel[i][j].setIcon(new ImageIcon("image/border2.jpg"));
-//						}
-//					}
 				}
 
 			}
@@ -194,11 +308,13 @@ public class OnePlayerView extends JFrame {
 			markPlayer[x][y] = 1;
 			count++;
 			stk.push(k);
+			playSound();
 		}else if(turn=="X") {
 			bt.setIcon(new ImageIcon(OnePlayerView.class.getResource("/icon/x.jpg")));
 			markPlayer[x][y] = -1;
 			count++;
 			stk.push(k);
+			playSound();
 		}
 	}
 	
@@ -317,6 +433,15 @@ public class OnePlayerView extends JFrame {
 			}
 		}
 	}
+	
+
+	public void Reset() {
+		int res = JOptionPane.showConfirmDialog(this, "Bạn có muốn chơi lại không?", "Thông báo",
+			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		
+		if (res == JOptionPane.YES_OPTION) ResetEnd();
+	}
+	
 	public void ResetEnd() {
 		btnStart.setText("0");
 		btnStart.setIcon(new ImageIcon(OnePlayerView.class.getResource("/view/buttonBatdau_114x38.png")));
@@ -332,6 +457,43 @@ public class OnePlayerView extends JFrame {
 				markPlayer[i][j] = 0;
 			}
 	}
+	public void playSoundButton() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("image/click3.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
+	
+	public void playSound() {
+		try {
+			AudioInputStream audioInputStream = AudioSystem
+					.getAudioInputStream(new File("image/click.wav").getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
+	}
+	
+	public void playSoundwin() {
+		try {
+			AudioInputStream audioInputStream = AudioSystem
+					.getAudioInputStream(new File("image/win.wav").getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("Error with playing sound.");
+			ex.printStackTrace();
+		}
+	}	
 
 
 }

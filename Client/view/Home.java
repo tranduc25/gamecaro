@@ -148,10 +148,10 @@ public class Home extends JFrame {
 		panel_2.setBounds(242, 336, 510, 173);
 		contentPane.add(panel_2);
 
-		JButton btnNewButton_2 = new JButton("Chơi Ngay");
+		JButton btnNewButton_2 = new JButton("");
 		btnNewButton_2.setBackground(new Color(125, 191, 191));
-		btnNewButton_2.setBounds(37, 105, 168, 58);
-//		btnNewButton_2.setIcon(new ImageIcon("src/view/button_ChoingayOnline_170x60.png"));
+		btnNewButton_2.setBounds(176, 105, 168, 58);
+		btnNewButton_2.setIcon(new ImageIcon(Home.class.getResource("/view/button_ChoingayOnline_170x60.png")));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playSound();
@@ -184,10 +184,10 @@ public class Home extends JFrame {
 		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel_2.add(btnNewButton_2);
 
-		JButton btnNewButton_1 = new JButton("Tạo Phòng");
+		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.setBackground(new Color(83, 168, 168));
 		btnNewButton_1.setBounds(320, 29, 168, 49);
-//		btnNewButton_1.setIcon(new ImageIcon("src/view/button_Taophong_167x60.png"));
+		btnNewButton_1.setIcon(new ImageIcon(Home.class.getResource("/view/button_Taophong_167x60.png")));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playSound();
@@ -203,11 +203,11 @@ public class Home extends JFrame {
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel_2.add(btnNewButton_1);
 
-		JButton btnNewButton = new JButton("Vào Phòng");
+		JButton btnNewButton = new JButton("");
 		btnNewButton.setBackground(new Color(83, 168, 168));
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setBounds(37, 29, 168, 49);
-//		btnNewButton.setIcon(new ImageIcon("src/view/button_vaophong_167x60.png"));
+		btnNewButton.setIcon(new ImageIcon(Home.class.getResource("/view/button_vaophong_167x60.png")));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playSound();
@@ -226,40 +226,7 @@ public class Home extends JFrame {
 		
 		
 		
-		JButton btnNewButton_2_1 = new JButton("Chơi BO3");
-		btnNewButton_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_2_1.setBackground(new Color(125, 191, 191));
-		btnNewButton_2_1.setBounds(320, 105, 168, 58);
-		btnNewButton_2_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playSound();
-				try {
-					ld = new Load(client);
-
-					ld.setVisible(true);
-					ld.setLocationRelativeTo(contentPane);
-					
-					ld.btnNewButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							try {
-								write("khong-co-phong-bo3");
-								ld.dispose();
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						}
-					});
-					write("go-room-bo3-now");
-
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnNewButton_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_2.add(btnNewButton_2_1);
+		
 
 		
 		
@@ -290,11 +257,11 @@ public class Home extends JFrame {
 		btnNewButton_4.setBounds(692, 291, 60, 34);
 		contentPane.add(btnNewButton_4);
 		
-		JButton btnNewButton_3 = new JButton("Thoát");
+		JButton btnNewButton_3 = new JButton("");
 		btnNewButton_3.setBackground(new Color(71, 141, 141));
 		btnNewButton_3.setBounds(36, 427, 159, 54);
 		contentPane.add(btnNewButton_3);
-//		btnNewButton_3.setIcon(new ImageIcon("src/view/button_thoatonline_137x53.png"));
+		btnNewButton_3.setIcon(new ImageIcon(Home.class.getResource("/view/button_thoatonline_137x53.png")));
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playSound();

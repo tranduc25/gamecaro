@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
@@ -76,7 +80,7 @@ public class User extends JFrame {
 		contentPane.add(lblNewLabel_1);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(192, 192, 192));
+		panel.setBackground(new Color(83, 168, 168));
 		panel.setBounds(10, 10, 500, 329);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -88,6 +92,7 @@ public class User extends JFrame {
 				panel.add(btnNewButton);
 				btnNewButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						playSoundButton();
 						try {
 							String username = textField.getText();
 							if (username.isEmpty() || username.length() < 5 || username.length() > 15) {
@@ -113,4 +118,15 @@ public class User extends JFrame {
 		os.writeUTF(message);
 		os.flush();
 	}
+	public void playSoundButton() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("image/click3.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 }
